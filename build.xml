@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<project name="Checkers" default="deploy" basedir=".">
+   <target name="init">
+      <property name="sourceDir" value="." />
+      <property name="outputDir" value="../bin" />
+      <property name="outputDocs" value="../doc" />
+      <property name="deployJSP" value="/web/deploy/jsp" />
+   </target>
+
+   <target name="clean" depends="init">
+      <delete dir="${outputDir}" />
+      <delete dir="${outputDocs}" />
+   </target>
+
+   <target name="prepare" depends="clean">
+      <mkdir dir="${outputDir}" />
+   </target>
+
+   <target name="compile" depends="prepare">
+     <javac srcdir="${sourceDir}" destdir="${outputDir}" />
+   </target>
+
+   <target name="documentation" depends="init">
+     <javadoc sourcepath="${sourceDir}" destdir="${outputDocs}" />
+   </target>
+
+   <target name="deploy" depends="compile,init">
+     <copy file="${sourceDir}/manifest.mif" todir="${outputDir}" />
+     <jar jarfile="${outputDir}/checkers.jar" basedir="${outputDir}" excludes="*.jar" manifest="${outputDir}/manifest.mif"/>
+     <delete>
+       <fileset dir="${outputDir}"  excludes="*.jar"/>
+     </delete>
+   </target>
+</project>
+

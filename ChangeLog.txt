@@ -1,0 +1,19 @@
+(27-10-2002)
+       - Acrescentei a localização para
+       português e inglês
+
+(21-10-2002)
+       - Mudei a licença para LGPL
+
+(18-09-2002)
+       - Mudei a API de AWT para Swing;
+       - Removi as classes Message, CloseWindow,
+       CloseWindowAndExit que são dispensáveis em Swing
+       - Actualizei alguns dos comentários;
+       - Acrescentei ficheiros para inglês;
+       - Batch files para Windows e Bash scripts para Unix
+
+(10-09-2002)
+       - Criei a class Debug e substitui todas as invocações
+       de System.out.println() por Debug.println()
+       
