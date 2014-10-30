@@ -91,7 +91,7 @@ public class BoardView extends JPanel {
     if (board.getCurrentPlayer () == CheckersBoard.WHITE)
      parent.setTitle (resources.getString("whiteTitleLabel"));
     else
-      parent.setTitle (resources.getString("redtitlelabel"));
+      parent.setTitle (resources.getString("redTitleLabel"));
   }
 
   /**
@@ -292,9 +292,8 @@ class MouseHandler extends MouseAdapter {
 
   
   /**
-   *  Processa a mensagem de pressao num botao
-   *  Se for "clicado" numa casa com uma peca, se essa peca for do jogador,
-   * ela fica selecionada.
+   *  Process the messagge for a mouse click
+   *  Selects the piece if that piece belongs to the currentplayer
    */
   public void mouseClicked (MouseEvent e) {
     int pos;
@@ -313,18 +312,24 @@ class MouseHandler extends MouseAdapter {
               board.getCurrentPlayer () == CheckersBoard.WHITE) ||
               ((piece == CheckersBoard.BLACK || piece == CheckersBoard.BLACK_KING) &&
               board.getCurrentPlayer () == CheckersBoard.BLACK))) {
-          if (view.selected.isEmpty ())  // Se nao havia nenhuma selecionada
+          if (view.selected.isEmpty ())  // Nothing previously selected
             view.selected.push_back (new Integer (pos));
           else {
             int temp = ((Integer) view.selected.peek_tail ()).intValue ();
 
-            if (temp == pos) // Se estava selecionada, desceleciona
+            if (temp == pos) // IF it was chosen, deslect
               view.selected.pop_back ();
             else
-	      JOptionPane.showMessageDialog (parent,
-                                             view.resources.getString("notSelectedLabel"),
-                                             view.resources.getString("errorLabel"),
-                                             JOptionPane.ERROR_MESSAGE);
+            {
+//	      JOptionPane.showMessageDialog (parent,
+//                                             view.resources.getString("notSelectedLabel"),
+//                                             view.resources.getString("errorLabel"),
+//                                             JOptionPane.ERROR_MESSAGE);
+              view.selected.pop_back();
+              view.selected.push_back(new Integer (pos));
+              view.repaint();
+              return;
+            }
           }
           
           
