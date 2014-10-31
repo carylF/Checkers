@@ -710,10 +710,10 @@ public class CheckersBoard implements Cloneable, Serializable {
    */
   public void move (List moves) throws BadMoveException {
     Move move;
-    Enumeration enumer = moves.elements ();
+    Enumeration enum = moves.elements ();
 
-    while (enumer.hasMoreElements ()) {
-      move = (Move) enumer.nextElement ();
+    while (enum.hasMoreElements ()) {
+      move = (Move) enum.nextElement ();
       applyMove (move.getFrom (), move.getTo ());
     }
 
@@ -764,15 +764,15 @@ public class CheckersBoard implements Cloneable, Serializable {
   }
 
   /**
-   * Indica se o jogo ja' terminou.
+   * Indicates when game has ended.
    */
   public boolean hasEnded () {
-    return whitePieces == 0 || blackPieces == 0 || !notNull (legalMoves ());
+    return whitePieces == 0 || blackPieces == 0 ||!notNull (legalMoves ());
   }
 
 
   /**
-   * Indica quem ganhou o jogo
+   * Determines who is the Winner
    */
   public int winner () {
     if (currentPlayer == WHITE)
@@ -784,6 +784,13 @@ public class CheckersBoard implements Cloneable, Serializable {
         return BLACK;
       else
         return WHITE;
+  }
+  
+  /**
+   * Determines if the game draws
+   */
+  public boolean draw () {
+    return whitePieces==blackPieces;
   }
   
   

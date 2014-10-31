@@ -91,7 +91,7 @@ public class BoardView extends JPanel {
     if (board.getCurrentPlayer () == CheckersBoard.WHITE)
      parent.setTitle (resources.getString("whiteTitleLabel"));
     else
-      parent.setTitle (resources.getString("redtitlelabel"));
+      parent.setTitle (resources.getString("redTitleLabel"));
   }
 
   /**
@@ -148,12 +148,11 @@ public class BoardView extends JPanel {
     
     // Clears the buffer
     
-    g.setColor (Color.lightGray);
+    g.setColor (Color.darkGray);
     g.fillRect (0, 0, d.width, d.height);
     g.setColor (Color.black);
     
-    //  Calcula os incrementos de forma a obter um tabuleiro
-    // quadrado
+    //  Calculates the increments to obtain a square board
     if (d.width < d.height) {
       marginX = 0;
       marginY = (d.height - d.width) / 2;
@@ -176,12 +175,12 @@ public class BoardView extends JPanel {
   }
 
   /**
-   * Desenha a parte do tabuleiro
+   * Draws the part of the board
    *
-   * @param g Contexto onde desenha as pecas
-   * @param marginX Margem horizontal do tabuleiro
-   * @param marginY Margem vertical do tabuleiro
-   * @param incValue Factor de incremento entre as casas do tabuleiro
+   * @param g Context which draws the parts
+   * @param marginX Horizontal edge of the board
+   * @param marginY Vertical edge of the board
+   * @param incValue Increment factor between the squares of the board
    */
   private void drawBoard (Graphics g, int marginX, int marginY, int incValue) {
     int pos;
@@ -206,7 +205,7 @@ public class BoardView extends JPanel {
 
 
   /**
-   * Margem para as pecas que sao damas
+   * Margin for the King pieces
    */
   private static final int KING_SIZE = 3;
   
@@ -264,21 +263,9 @@ public class BoardView extends JPanel {
  * Classe para processar os eventos do rato para o tabuleiro
  */
 class MouseHandler extends MouseAdapter {
-  /**
-   * Tabuleiro a que o evento esta associado
-   */
+
   private BoardView view;
-
-  /**
-   * Pai do componente a que este evento esta' associado
-   */
   private JFrame parent;
-  
-
-
-  /**
-   * tabuleiro temporario para jogadas multiplas
-   */
   Stack boards;
   
   /**
@@ -292,15 +279,17 @@ class MouseHandler extends MouseAdapter {
 
   
   /**
-   *  Processa a mensagem de pressao num botao
-   *  Se for "clicado" numa casa com uma peca, se essa peca for do jogador,
-   * ela fica selecionada.
+<<<<<<< HEAD
+   *  Process the message for a mouse click
+   *  Selects the piece if that piece belongs to the current player.
+=======
+   *  Process the messagge for a mouse click
+   *  Selects the piece if that piece belongs to the currentplayer
+>>>>>>> origin/master
    */
   public void mouseClicked (MouseEvent e) {
     int pos;
    
-
-
     pos = getPiecePos (e.getX (), e.getY ());
     if (pos != -1)
       try {
@@ -313,18 +302,38 @@ class MouseHandler extends MouseAdapter {
               board.getCurrentPlayer () == CheckersBoard.WHITE) ||
               ((piece == CheckersBoard.BLACK || piece == CheckersBoard.BLACK_KING) &&
               board.getCurrentPlayer () == CheckersBoard.BLACK))) {
-          if (view.selected.isEmpty ())  // Se nao havia nenhuma selecionada
+          if (view.selected.isEmpty ())  // Nothing previously selected
             view.selected.push_back (new Integer (pos));
           else {
             int temp = ((Integer) view.selected.peek_tail ()).intValue ();
 
-            if (temp == pos) // Se estava selecionada, desceleciona
+<<<<<<< HEAD
+            if (temp == pos) //IF it was not chosen, de-select
               view.selected.pop_back ();
             else
-	      JOptionPane.showMessageDialog (parent,
-                                             view.resources.getString("notSelectedLabel"),
-                                             view.resources.getString("errorLabel"),
-                                             JOptionPane.ERROR_MESSAGE);
+            {
+            	
+            	view.selected.pop_back();
+            	view.selected.push_back(new Integer(pos));
+//            	view.repaint();
+            	//return;
+            }
+	      
+=======
+            if (temp == pos) // IF it was chosen, deslect
+              view.selected.pop_back ();
+            else
+            {
+//	      JOptionPane.showMessageDialog (parent,
+//                                             view.resources.getString("notSelectedLabel"),
+//                                             view.resources.getString("errorLabel"),
+//                                             JOptionPane.ERROR_MESSAGE);
+              view.selected.pop_back();
+              view.selected.push_back(new Integer (pos));
+              view.repaint();
+              return;
+            }
+>>>>>>> origin/master
           }
           
           
@@ -463,13 +472,28 @@ class MouseHandler extends MouseAdapter {
     int black = board.getBlackPieces ();
     if (board.hasEnded ()) {
       if (board.winner () == CheckersBoard.BLACK)
-        JOptionPane.showMessageDialog (parent, view.resources.getString("redWinLabel"),
-                                       view.resources.getString("endGameLabel"),
-                                       JOptionPane.INFORMATION_MESSAGE);
-      else
-        JOptionPane.showMessageDialog (parent, view.resources.getString("whiteWinLabel"),
-                                       view.resources.getString("endGameLabel"),
-                                       JOptionPane.INFORMATION_MESSAGE);
+      {
+    	  JOptionPane.showMessageDialog (parent, view.resources.getString("redWinLabel"),
+                  view.resources.getString("endGameLabel"),
+                  JOptionPane.INFORMATION_MESSAGE);
+    	  view.newGame();
+      }
+      else if  (board.winner () == CheckersBoard.WHITE)
+      {
+    	  JOptionPane.showMessageDialog (parent, view.resources.getString("whiteWinLabel"),
+                  view.resources.getString("endGameLabel"),
+                  JOptionPane.INFORMATION_MESSAGE);
+    	  view.newGame();
+      }
+      
+      else if (board.draw()==true)
+      {
+    	  JOptionPane.showMessageDialog (parent, view.resources.getString("drawGameLabel"),
+                  view.resources.getString("endGameLabel"),
+                  JOptionPane.INFORMATION_MESSAGE);
+    	  view.newGame();
+      }
+        
       result = true;
     }
     else
