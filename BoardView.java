@@ -277,20 +277,9 @@ class MouseHandler extends MouseAdapter {
     boards = new Stack ();
   }
 
-  
   /**
-<<<<<<< HEAD
-<<<<<<< HEAD
-   *  Process the message for a mouse click
-   *  Selects the piece if that piece belongs to the current player.
-=======
    *  Process the messagge for a mouse click
    *  Selects the piece if that piece belongs to the currentplayer
->>>>>>> origin/master
-=======
-   *  Process the messagge for a mouse click
-   *  Selects the piece if that piece belongs to the currentplayer
->>>>>>> origin/master
    */
   public void mouseClicked (MouseEvent e) {
     int pos;
@@ -312,8 +301,6 @@ class MouseHandler extends MouseAdapter {
           else {
             int temp = ((Integer) view.selected.peek_tail ()).intValue ();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
             if (temp == pos) //IF it was not chosen, de-select
               view.selected.pop_back ();
             else
@@ -324,10 +311,7 @@ class MouseHandler extends MouseAdapter {
 //            	view.repaint();
             	//return;
             }
-	      
-=======
-=======
->>>>>>> origin/master
+
             if (temp == pos) // IF it was chosen, deslect
               view.selected.pop_back ();
             else
@@ -341,10 +325,7 @@ class MouseHandler extends MouseAdapter {
               view.repaint();
               return;
             }
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
+
           }
           
           
@@ -497,13 +478,13 @@ class MouseHandler extends MouseAdapter {
     	  view.newGame();
       }
       
-      else if (board.draw()==true)
+      /*else if (board.draw()==true)
       {
     	  JOptionPane.showMessageDialog (parent, view.resources.getString("drawGameLabel"),
                   view.resources.getString("endGameLabel"),
                   JOptionPane.INFORMATION_MESSAGE);
     	  view.newGame();
-      }
+      }*/
         
       result = true;
     }
