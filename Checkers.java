@@ -28,7 +28,7 @@ import javax.swing.*;
  */
 public class Checkers extends JFrame implements ActionListener {
 
-  private static ResourceBundle resources;     /*Resources*/
+  private static ResourceBundle resources;    
   private JMenuBar bar;
   private JMenuItem restartOption;
   private JMenuItem saveOption;
@@ -59,14 +59,6 @@ public class Checkers extends JFrame implements ActionListener {
     restartOption = new JMenuItem (resources.getString("newLabel"));
     restartOption.addActionListener (this);
     menu.add (restartOption);
-
-    saveOption = new JMenuItem (resources.getString("saveLabel"));
-    saveOption.addActionListener (this);
-    menu.add (saveOption);
-
-    loadOption = new JMenuItem (resources.getString("openLabel"));
-    loadOption.addActionListener (this);
-    menu.add (loadOption);    
 
     menu.addSeparator ();
     exitOption = new JMenuItem (resources.getString("exitLabel"));
@@ -106,20 +98,6 @@ public class Checkers extends JFrame implements ActionListener {
       System.exit (0);
     else if (event.getSource () == restartOption)
 	view.newGame ();
-    else if (event.getSource () == saveOption) {
-	dlg = new JFileChooser ();
-	if (dlg.showSaveDialog (this) == JFileChooser.APPROVE_OPTION) {
-            String fileName = dlg.getSelectedFile ().getPath ();
-	    view.saveBoard (fileName);
-	}
-    }
-    else if (event.getSource () == loadOption) {
-	dlg = new JFileChooser ();
-	if (dlg.showOpenDialog (this) == JFileChooser.APPROVE_OPTION) {
-	    String fileName = dlg.getSelectedFile ().getPath ();
-	    view.loadBoard (fileName);
-	}
-    }
     else if (event.getSource () == debugOption)
 	Debug.setDebug (debugOption.getState ());
   }

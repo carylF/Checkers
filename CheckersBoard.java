@@ -49,7 +49,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Indica qual o jogador actual.
+   * Current Player on the board
    */
   private int currentPlayer;
 
@@ -64,35 +64,35 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Devolve qual o jogador corrente
+   * Returns the current player on the board 
    */
   public int getCurrentPlayer () {
     return currentPlayer;
   }
   
   /**
-   * Muda o jogador corrente
+   * Sets the current player 
    */
   public void setCurrentPlayer (int player) {
     currentPlayer = player;
   }
 
   /**
-   * Devolve o numero de pecas do jogador branco.
+   * returns the number of white pieces on the board
    */
   public int getWhitePieces () {
     return whitePieces;
   }
 
   /**
-   * Devolve o numero de pecas do jogador preto.
+   * Returns the number of black pieces on the board
    */
   public int getBlackPieces () {
     return blackPieces;
   }
    
    /**
-    * Cria uma copia da classe
+    * Clones the class Checkers Board
     */
    public Object clone () {
       CheckersBoard board = new CheckersBoard ();
@@ -106,7 +106,7 @@ public class CheckersBoard implements Cloneable, Serializable {
    }
 
    /**
-    * Grava o tabuleiro no disco
+    * Writes the board state to disk
     */
   private void writeObject (ObjectOutputStream out) throws IOException {
     out.write (pieces);
@@ -116,7 +116,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   }
 
    /**
-    * Carrega o tabuleiro do disco
+    * Loads the board state from 
     */
   private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
     pieces = new byte [32];
