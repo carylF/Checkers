@@ -25,7 +25,7 @@ public class Computer {
   private CheckersBoard currentBoard;            /*Board that the Computer Uses*/
   private int color;                            /*colour used by the computer*/
 
-  private static final int maxDepth = 2;        /* Maximum depth to the minimax*/
+  private static final int maxDepth = 5;        /* Maximum depth to the minimax*/
 
   private static final int tableWeight[] = { 4, 4, 4, 4,
                                              4, 3, 3, 3,
@@ -52,8 +52,8 @@ public class Computer {
    */
   public void play () {
     try {
-      List moves = minimax (currentBoard);
-      
+      List moves = negamaxhandler (currentBoard);
+      //List moves = minimax(currentBoard);
       if (!moves.isEmpty ())
         currentBoard.move (moves);
     }
@@ -72,12 +72,72 @@ public class Computer {
 
   /**
    * Whether the move is possible
+   * 
+   * Predicate function for possible moves
    */
   private boolean mayPlay (List moves) {
     return !moves.isEmpty () && !((List) moves.peek_head ()).isEmpty ();
   }
   
-
+  private List negamax(CheckersBoard board)
+  {
+	return null;
+  }
+  
+  
+  private List negamaxhandler(CheckersBoard board)throws BadMoveException
+  {
+	  List sucessors; 
+	  List move = null; 
+	  int value, player;
+	  CheckersBoard nextBoard,currentplayer; 
+	  player = 1;
+	  
+	  sucessors = board.legalMoves();
+	  while (!sucessors.isEmpty())
+	  {
+		  move = (List) sucessors.pop_front();
+		  nextBoard = (CheckersBoard) board.clone();
+		  
+		  value = negamax(nextBoard, 1, player);
+	  }
+	  
+	  return move;
+  }
+  /**
+   * Implements the NegaMax algorithm
+   */
+  
+  private int negamax (CheckersBoard board, int depth, int player)
+  throws BadMoveException{
+	  if (cutOffTest(board, depth))
+		  return eval (board);
+	  
+	  int max  = Integer.MIN_VALUE;
+	  List move;
+	  CheckersBoard nextBoard;
+	  List sucessors;
+	  int value;
+	  
+	  sucessors = board.legalMoves();
+	  
+	  while (mayPlay(sucessors))
+	  {
+		  move = (List) sucessors.pop_front();
+		  nextBoard = (CheckersBoard) board.clone();
+		  nextBoard.move (move);
+		  if (player == 1)
+			  value = - negamax(nextBoard, depth + 1, CheckersBoard.BLACK );
+		  else 
+			  value = - negamax(nextBoard, depth + 1, CheckersBoard.WHITE );
+		  
+		  if (value>max)
+			  max = value;
+		  
+	  }
+	  
+	  return  max;
+  }
   /**
    * Implements the Min-Max algorithm
    */
