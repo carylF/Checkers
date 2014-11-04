@@ -140,7 +140,7 @@ public class Computer {
   }
  
    /**
-    * Devolve a forca do jogador corrente.
+    *Returns the strength of the current player.
     */
    private int eval (CheckersBoard board) {
       int colorKing;
@@ -211,12 +211,6 @@ public class Computer {
   }
   
 }
-
-
-
-
-
-
 
 
 

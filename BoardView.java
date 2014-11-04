@@ -48,10 +48,9 @@ public class BoardView extends JPanel {
 
   /**
    * Constructor
-   * @param parentComponent Componente onde o tabuleiro
-   * vai desenhar
-   * @param b Classe que guarda o estado do tabuleiro
-   * @param bundle Recurso com as strings
+   * @param parentComponent 
+   * @param b Instance of Checkerboard
+   * @param bundle Resources(strings)
    */
   public BoardView (JFrame parentComponent, CheckersBoard b,
                     ResourceBundle bundle) {
@@ -85,7 +84,7 @@ public class BoardView extends JPanel {
 
 
   /**
-   * Muda o título para reflectir o jogador corrente
+   * Changer player color
    */
    public void ChangeTitle () {
     if (board.getCurrentPlayer () == CheckersBoard.WHITE)
@@ -95,8 +94,8 @@ public class BoardView extends JPanel {
   }
 
   /**
-   * Grava um tabuleiro
-   * @param fileName Path para o ficheiro
+   * Save a game
+   * @param fileName 
    */
   public void saveBoard (String fileName) {
     try {
@@ -113,8 +112,8 @@ public class BoardView extends JPanel {
   }
 
   /**
-   * Carrega um tabuleiro
-   * @param fileName Path para o ficheiro
+   * Load game
+   * @param fileName Path of previously saved game
    */
   public void loadBoard (String fileName) {
     try {
@@ -137,8 +136,8 @@ public class BoardView extends JPanel {
     
     
   /**
-   * Desenha o tabuleiro.
-   * @param g Local onde o desenho é efectuado
+   * Design of board.
+   * @param g g
    */
   public void paintComponent (Graphics g) {
     Dimension d = getSize ();
@@ -210,13 +209,13 @@ public class BoardView extends JPanel {
   private static final int KING_SIZE = 3;
   
   /**
-   * Desenha as pecas existentes no tabuleiro
+   * Draws the existing pieces on the board
    *
-   * @param g Contexto onde desenha as pecas
-   * @param marginX Margem horizontal do tabuleiro
-   * @param marginY Margem vertical do tabuleiro
-   * @param incValue Factor de incremento entre as casas do tabuleiro onde as pecas sao
-   *                desenhadas                
+   * @param g Context which draws the parts
+   * @param marginX Horizontal board margin
+   * @param marginY Vertical board margin
+   * @param incValue Factor increase from board houses where the parts are 
+   * designed               
    */
   private void drawPieces (Graphics g, int marginX, int marginY, int incValue) {
     int x, y;
@@ -260,7 +259,7 @@ public class BoardView extends JPanel {
   
 
 /**
- * Classe para processar os eventos do rato para o tabuleiro
+ *Mouse action class
  */
 class MouseHandler extends MouseAdapter {
 
@@ -269,7 +268,7 @@ class MouseHandler extends MouseAdapter {
   Stack boards;
   
   /**
-   * @param boardView Tabuleiro que se encontra associado a estes eventos
+   * @param boardView Board associted with the event
    */
   public MouseHandler (BoardView boardView, JFrame parentComponent) {
     view = boardView;
@@ -277,9 +276,10 @@ class MouseHandler extends MouseAdapter {
     boards = new Stack ();
   }
 
+  
   /**
-   *  Process the messagge for a mouse click
-   *  Selects the piece if that piece belongs to the currentplayer
+   *  Process the message for a mouse click
+   *  Selects the piece if that piece belongs to the current player.
    */
   public void mouseClicked (MouseEvent e) {
     int pos;
@@ -308,24 +308,8 @@ class MouseHandler extends MouseAdapter {
             	
             	view.selected.pop_back();
             	view.selected.push_back(new Integer(pos));
-//            	view.repaint();
-            	//return;
             }
-
-            if (temp == pos) // IF it was chosen, deslect
-              view.selected.pop_back ();
-            else
-            {
-//	      JOptionPane.showMessageDialog (parent,
-//                                             view.resources.getString("notSelectedLabel"),
-//                                             view.resources.getString("errorLabel"),
-//                                             JOptionPane.ERROR_MESSAGE);
-              view.selected.pop_back();
-              view.selected.push_back(new Integer (pos));
-              view.repaint();
-              return;
-            }
-
+	      
           }
           
           
@@ -337,7 +321,6 @@ class MouseHandler extends MouseAdapter {
           CheckersBoard tempBoard;
                     
           if (!view.selected.isEmpty ()) {
-            // Obtem o tabuleiro corrente
             if (boards.empty ()) {
               tempBoard = (CheckersBoard) board.clone ();
               boards.push (tempBoard);
@@ -394,7 +377,7 @@ class MouseHandler extends MouseAdapter {
 
 
   /**
-   * Limpa as estruturas temporarias
+   * Reset game 
    */
   public void reset () {
     boards = new Stack ();
@@ -403,7 +386,7 @@ class MouseHandler extends MouseAdapter {
 
 
   /**
-   * Efectua as jogadas do jogador humano, seguido do computador
+   * Performs human player's moves, followed by computer
    */
   private void makeMoves (List moves, CheckersBoard board) throws BadMoveException {
     List moveList = new List ();
@@ -433,9 +416,9 @@ class MouseHandler extends MouseAdapter {
   }
     
   /**
-   * Devolve o indice da peca seleciona
-   * @returns Indice (0-31) da peca selecionada.
-   *          No caso de nao estar nenhuma selecionada devolve -1.
+   * Returns the selected piece
+   * @returns Index (0-31) of the selected piece. 
+    * If not selected to be no returns -1.
    */
   private int getPiecePos (int currentX, int currentY) {
     for (int i = 0; i < 32; i++) {
@@ -454,7 +437,7 @@ class MouseHandler extends MouseAdapter {
   }
 
   /**
-   * Trata a situacao de fim de jogo
+   * Implements situation for end game
    */
   private boolean gameEnded () {
     CheckersBoard board = view.getBoard ();
@@ -478,13 +461,13 @@ class MouseHandler extends MouseAdapter {
     	  view.newGame();
       }
       
-      /*else if (board.draw()==true)
+      else if (board.draw()==true)
       {
     	  JOptionPane.showMessageDialog (parent, view.resources.getString("drawGameLabel"),
                   view.resources.getString("endGameLabel"),
                   JOptionPane.INFORMATION_MESSAGE);
     	  view.newGame();
-      }*/
+      }
         
       result = true;
     }

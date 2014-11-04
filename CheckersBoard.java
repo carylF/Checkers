@@ -22,9 +22,6 @@ import java.util.*;
 import java.io.*;
 
 
-/**
- * Tabuleiro de damas
- */
 public class CheckersBoard implements Cloneable, Serializable {
   /**
    * Board representation
@@ -116,7 +113,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   }
 
    /**
-    * Loads the board state from 
+    * Loads the board state 
     */
   private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
     pieces = new byte [32];
@@ -129,8 +126,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   
 
   /**
-   *  Devolve uma lista com todas as jogadas validas para o jogador
-   * corrente
+   *  Returns a list of all valid moves for the current player
    */
    public List legalMoves () {
      int color;
@@ -149,7 +145,7 @@ public class CheckersBoard implements Cloneable, Serializable {
    }
 
    /**
-    * Gera as jogadas para os movimentos que sao de ataque
+    * Generates the moves to the moves that are attacking
     */
     private List generateAttackMoves (int color, int enemy) {
       List moves = new List ();
@@ -179,7 +175,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Gera as jogadas para ataques com pecas simples
+   * Generates the moves for attacks with simple pieces
    */
   private List simpleAttack (int pos, int color, int enemy) {
     int x = posToCol (pos);
@@ -225,7 +221,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Constantes para a 'ultima direccao
+   * Constant for the last path
    */
   private static final int NONE = 0;        // Primeira vez
   private static final int LEFT_BELOW  = 1; // Diagonal v/
@@ -274,7 +270,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   
 
   /** 
-   * Gera as jogadas para ataques com pecas de dama para uma diagonal
+   * Generates the moves for diagonal checkers attacks 
    */
   private List kingDiagAttack (List lastPos, int pos, int color, int enemy, int incX, int incY) {
     int x = posToCol (pos);
@@ -289,7 +285,7 @@ public class CheckersBoard implements Cloneable, Serializable {
     i = x + incX;
     j = y + incY;
 
-    // Procura o inimigo
+    // Looking for the enemy
     while (i > 0 && i < 7 && j > 0 && j < 7 &&
            (pieces [colLineToPos (i, j)] == EMPTY ||  colLineToPos (i, j) == startPos)) {
       i += incX;
@@ -355,16 +351,14 @@ public class CheckersBoard implements Cloneable, Serializable {
   
 
   /**
-   * Indica se a lista de listas nao e' nula
+   *Whether the list of lists and not null
    */
   private boolean notNull (List moves) {
     return !moves.isEmpty () && !((List) moves.peek_head ()).isEmpty ();
   }
   
   /**
-   * Acrescenta move 'a cabeca de todas as listas de moves
-   * @param move jogada a acrescentar
-   * @param moves lista de listas com jogadas, no fim fica vazia
+   * Creates a move
    */
   private List addMove (Move move, List moves) {
     if (move == null)
@@ -383,7 +377,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   
   
    /**
-    * Gera as jogadas para os movimentos que nao sao de ataque
+    * Generates the moves to moves that are not attacks
     */
     private List generateMoves (int color, int enemy) {
       List moves = new List ();
@@ -407,8 +401,6 @@ public class CheckersBoard implements Cloneable, Serializable {
               moves.push_back (tempMove);
             }
             
-         
-            // Ve as diagonais ^\ e v/
             if (x > 0 && y + i >= 0 && y + i <= 7 &&
                 pieces [colLineToPos (x - 1, y + i)]  == EMPTY) {
               tempMove = new List ();
@@ -416,8 +408,7 @@ public class CheckersBoard implements Cloneable, Serializable {
               moves.push_back (tempMove);
             };
           }
-          else { // E' uma dama
-            // Ve a diagonal \v
+          else { 
             i = x + 1;
             j = y + 1;
             
@@ -430,8 +421,7 @@ public class CheckersBoard implements Cloneable, Serializable {
               j++;
             }
 
-    
-            // Ve a diagonal ^\
+
             i = x - 1;
             j = y - 1;
             while (i >= 0  && j >= 0 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -443,7 +433,6 @@ public class CheckersBoard implements Cloneable, Serializable {
               j--;
             }
 
-            // Ve a diagonal /^
             i = x + 1;
             j = y - 1;
             while (i <= 7 && j >= 0 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -455,7 +444,6 @@ public class CheckersBoard implements Cloneable, Serializable {
               j--;
             }
 
-           // Ve a diagonal v/
            i = x - 1;
            j = y + 1;
            while (i >= 0 && j <= 7 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -473,18 +461,17 @@ public class CheckersBoard implements Cloneable, Serializable {
     }
   
   /**
-   * Indica se a jogada e valida
+   * Indicated whether a move is valid
    */
   public boolean isValidMove (int from, int to) {
-    // Se o valor da peca for invalido a jogada nao e' valida
+    // If the value of the piece is invalid and not play the 'valid
     if (from < 0 || from > 32 || to < 0 || to > 32)
       return false;
 
-    // Se a casa origem estiver vazia ou destino nao estiver vazia a jogada nao e' valida
     if (pieces [from] == EMPTY || pieces [to] != EMPTY)
       return false;
 
-    // Verifica se estamos a tentar mover uma peca do jogador actual
+    // Checks if we are trying to move a piece of the current player
     if ((pieces [from] & ~KING) != currentPlayer)
       return false;
     
@@ -505,7 +492,7 @@ public class CheckersBoard implements Cloneable, Serializable {
     
     int incX, incY;
 
-    // Calcula incrementos
+    // Calculate increments
     if (fromCol > toCol)
       incX = -1;
     else
@@ -534,11 +521,11 @@ public class CheckersBoard implements Cloneable, Serializable {
 
             
 
-      // Se nao se executou uma jogada simples so' pode ser uma jogada de conquista
+      //If not performed, a simple move can only 'be a move of conquest
       return goodDir && x + incX == toCol && y + incY == toLine &&
              (pieces [colLineToPos (x, y)] & ~KING) == enemy;
     }
-    else { // E' uma dama
+    else { 
       boolean found = false;
 
       while (x != toCol && y != toLine && pieces [colLineToPos (x, y)] == EMPTY) {
@@ -546,7 +533,7 @@ public class CheckersBoard implements Cloneable, Serializable {
         y += incY;
       }
 
-      // Jogada simples com dama
+      // Must jump over piece
       if (x == toCol && y == toLine)
         return !mustAttack ();
 
@@ -570,7 +557,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Indica se o jogador corrente e' obrigado a atacar
+   * Indicates whether the current player is'forced to attack
    */
   public boolean mustAttack () {
     for (int i = 0; i < 32; i++)
@@ -581,9 +568,8 @@ public class CheckersBoard implements Cloneable, Serializable {
   }
   
   /**
-   * Indica se a casa indicada ataca alguma posicao
-   * @param pos casa em questao
-   * @param multipleEat indica se estamos numa jogada de "comer" multiplo
+   * Indicates when a piece must attack
+   * @param pos mosition 
    */
   public boolean mayAttack (int pos) {
     if (pieces [pos] == EMPTY)
@@ -606,22 +592,19 @@ public class CheckersBoard implements Cloneable, Serializable {
 
       i = (color == WHITE) ? -1 : 1;
 
-      // Ve as diagonais /^ e \v
       if (x < 6 && y + i > 0 && y + i < 7 && (pieces [colLineToPos (x + 1, y + i)] & ~KING) == enemy &&
           pieces [colLineToPos (x + 2, y + 2 * i)]  == EMPTY)
         return true;
 
-      // Ve as diagonais ^\ e v/
       if (x > 1 && y + i > 0 && y + i < 7 && (pieces [colLineToPos (x - 1, y + i)] & ~KING) == enemy &&
           pieces [colLineToPos (x - 2, y + 2 * i)]  == EMPTY)
         return true;
 
     }
-    else { // E' uma dama
+    else {
       int i, j;
       
  
-      // Ve a diagonal \v
       i = x + 1;
       j = y + 1;
       while (i < 6 && j < 6 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -637,7 +620,6 @@ public class CheckersBoard implements Cloneable, Serializable {
           return true;
       }
       
-      // Ve a diagonal ^\
       i = x - 1;
       j = y - 1;
       while (i > 1 && j > 1 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -652,8 +634,7 @@ public class CheckersBoard implements Cloneable, Serializable {
         if (i >= 0 && j >= 0 && pieces [colLineToPos (i, j)] == EMPTY) 
           return true;
       }
-      
-      // Ve a diagonal /^
+
       i = x + 1;
       j = y - 1;
       while (i < 6 && j > 1 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -669,7 +650,6 @@ public class CheckersBoard implements Cloneable, Serializable {
           return true;
       }
       
-      // Ve a diagonal v/
       i = x - 1;
       j = y + 1;
       while (i > 1 && j < 6 && pieces [colLineToPos (i, j)] == EMPTY) {
@@ -691,7 +671,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   }
   
   /**
-   * Efectua uma jogada
+   * Performs game moves
    */
   public void move (int from, int to) throws BadMoveException {
     boolean haveToAttack = mustAttack ();
@@ -706,7 +686,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   }
 
   /**
-   * Efectua uma jogada multipla
+   * Performs a multiple play
    */
   public void move (List moves) throws BadMoveException {
     Move move;
@@ -722,7 +702,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Muda o jogador corrente
+   * Color of current player at first game and games after
    */
   private void changeSide () {
     if (currentPlayer == WHITE)
@@ -733,7 +713,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Efectua o movimento
+   * Performs movement
    */
    private void applyMove (int from, int to) throws BadMoveException {
      if (!isValidMove (from, to))
@@ -753,8 +733,8 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Devolve a peca desejada.
-   * @param pos posicao da peca
+   * Returns the desired part.
+   * @param pos position of piece
    */
   public byte getPiece (int pos) throws BadCoordException {
     if (pos < 0 || pos > 32)
@@ -796,7 +776,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   
 
   /**
-   * Elimina uma  peca do tabuleiro entre from e to
+   * Elimiates a piece from a position on the board
    */
   private void clearPiece (int from, int to) {
     int fromLine = posToLine (from);
@@ -839,7 +819,7 @@ public class CheckersBoard implements Cloneable, Serializable {
   
 
   /**
-   * Repoe o tabuleiro original
+   * Returns board to original state
    */
   public void clearBoard () {
     int i;
@@ -869,10 +849,10 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Indica a posicao que corresponde ao par linha coluna.
-   * @param col  coluna do tabuleiro (entre 0 e 7)
-   * @param line linha do tabuleiro (entre 0 e 7)   
-   * @returns posicao (entre 0 e 31)
+   * Indicates the position corresponding to the pair row.
+   * @param col  column on board (between 0 and 7)
+   * @param line row on board (between 0 and 7)   
+   * @returns position (between 0 and 31)
    */
   private int colLineToPos (int col, int line) {
     if (isEven (line))
@@ -883,7 +863,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Devolve a linha correspondente 'a posicao
+   * Returns the row for 'the position
    */
   private int posToLine (int value) {
     return value / 4;
@@ -891,7 +871,7 @@ public class CheckersBoard implements Cloneable, Serializable {
 
 
   /**
-   * Devolve a coluna correspondente 'a posicao
+   *Returns the column for 'the position
    */
   private int posToCol (int value) {
     return (value % 4) * 2 + ((value / 4) % 2 == 0 ? 1 : 0);
